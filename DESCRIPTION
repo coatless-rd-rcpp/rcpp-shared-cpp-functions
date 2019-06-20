@@ -1,0 +1,20 @@
+Package: RcppHeaderSharing
+Title: Prototyped Sharing of C++ Inline Headers
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "James",
+           family = "Balamuta",
+           role = c("aut", "cre"),
+           email = "balamut2@illinois.edu")
+Description: Provides a set of 'C++' header files with definitions inlined. 
+    Functions are then surfaced for 'R' using 'Rcpp Attributes' while the
+    definitions can be used in other 'R' packages.
+License: GPL (>= 2)
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 6.1.1
+LinkingTo: 
+    Rcpp
+Imports: 
+    Rcpp
