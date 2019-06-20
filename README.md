@@ -5,9 +5,10 @@
 <!-- badges: end -->
 
 The `RcppHeaderSharing` _R_ package provides an example of providing a set
-of _C++_ in one _R_ package to be use by other _R_ packages. There are multiple
-approaches to facilitate such an framework. Within this project, the focus
-is on providing _C++_ header files that make extensive use of `inline`
+of _C++_ functions in one _R_ package to be used by other _R_ packages. There 
+are multiple approaches to facilitate such a framework. Within this project, the
+focus is on distributing _C++_ header files within one of the _R_ packages 
+by making a _C++ header-only_ library through the extensive use of `inline`
 keyword. 
 
 ### Usage
@@ -31,7 +32,7 @@ library("RcppHeaderSharing")
 
 This project focuses on showcasing how to package in _R_ a _C++ header-only_ library.
 By approaching sharing _C++_ functions in this manner, the complexity is reduced
-at the expense of compile time during development an initial installation.
+at the expense of compile time during development and initial installation.
 Complexity reduction arises from the library not needing to be initially
 compiled, packaged, and then installed on a local user's computer. 
 
