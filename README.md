@@ -2,6 +2,7 @@
 
 <!-- badges: start -->
 [![Travis build status](https://travis-ci.org/r-pkg-examples/rcpp-shared-cpp-functions.svg?branch=master)](https://travis-ci.org/r-pkg-examples/rcpp-shared-cpp-functions)
+[![R-CMD-check](https://github.com/coatless-r-n-d/rcpp-shared-cpp-functions/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/coatless-r-n-d/rcpp-shared-cpp-functions/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 The `RcppHeaderSharing` _R_ package provides an example of providing a set

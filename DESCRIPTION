@@ -13,8 +13,9 @@ License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.3.1
 LinkingTo: 
     Rcpp
 Imports: 
     Rcpp
+URL: https://rd.thecoatlessprofessor.com/rcpp-shared-cpp-functions/

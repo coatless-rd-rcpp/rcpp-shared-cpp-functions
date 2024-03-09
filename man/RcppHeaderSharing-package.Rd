@@ -6,9 +6,14 @@
 \alias{RcppHeaderSharing-package}
 \title{RcppHeaderSharing: Prototyped Sharing of C++ Inline Headers}
 \description{
-Provides a set of 'C++' header files with definitions inlined. 
-    Functions are then surfaced for 'R' using 'Rcpp Attributes' while the
-    definitions can be used in other 'R' packages.
+Provides a set of 'C++' header files with definitions inlined. Functions are then surfaced for 'R' using 'Rcpp Attributes' while the definitions can be used in other 'R' packages.
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://rd.thecoatlessprofessor.com/rcpp-shared-cpp-functions/}
+}
+
 }
 \author{
 \strong{Maintainer}: James Balamuta \email{balamut2@illinois.edu}

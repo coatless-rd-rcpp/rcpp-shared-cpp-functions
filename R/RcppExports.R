@@ -6,7 +6,7 @@
 #' Retrieve a function defined inline from the package's header
 #' and surface it into _R_.
 #'
-#' @param x A `numeric vector`.
+#' @param x A `numeric` vector.
 #' @param y A single `numeric` value.
 #'
 #' @return

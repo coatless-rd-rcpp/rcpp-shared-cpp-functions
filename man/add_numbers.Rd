@@ -7,12 +7,12 @@
 add_numbers(x, y)
 }
 \arguments{
-\item{x}{A \code{numeric vector}.}
+\item{x}{A \code{numeric} vector.}
 
 \item{y}{A single \code{numeric} value.}
 }
 \value{
-A \code{numeric vector} that is incremented by a single value.
+A \verb{numeric vector} that is incremented by a single value.
 }
 \description{
 Retrieve a function defined inline from the package's header

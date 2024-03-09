@@ -4,3 +4,7 @@
 ^\.travis\.yml$
 ^LICENSE$
 ^\.Rhistory$
+^\.github$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
