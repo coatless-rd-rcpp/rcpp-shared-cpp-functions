@@ -11,7 +11,9 @@ Provides a set of 'C++' header files with definitions inlined. Functions are the
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://rd.thecoatlessprofessor.com/rcpp-shared-cpp-functions/}
+  \item \url{https://rd-rcpp.thecoatlessprofessor.com/rcpp-shared-cpp-functions/}
+  \item \url{https://github.com/coatless-rd-rcpp/rcpp-shared-cpp-functions}
+  \item Report bugs at \url{https://github.com/coatless-rd-rcpp/rcpp-shared-cpp-functions/issues}
 }
 
 }
