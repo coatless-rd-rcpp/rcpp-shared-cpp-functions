@@ -100,12 +100,45 @@
 <div class="section level4">
 <h4 id="headers">Headers<a class="anchor" aria-label="anchor" href="#headers"></a>
 </h4>
-<p>Todo: Add explanation</p>
+<p>The shared <em>C++</em> code is placed under <code>inst/include/</code> so that, once the package is installed, the headers are copied into the installed package’s <code>include/</code> directory – the location other packages reach through <code>LinkingTo</code>. The headers are organized around a single entry-point header, <code>RcppHeaderSharing.h</code>, that includes <code>Rcpp.h</code> once and then pulls in each individual header using relative <code>""</code> includes:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="pp">#ifndef RcppHeaderSharing_RcppHeaderSharing_H</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="pp">#define RcppHeaderSharing_RcppHeaderSharing_H</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;Rcpp.h&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="pp">#include </span><span class="im">"hello/say_hello.h"</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="pp">#include </span><span class="im">"rcpp_math/add_numbers.h"</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="pp">#endif</span></span></code></pre></div>
+<p>Each header is wrapped in an inclusion guard named after the package and the header (<code>RcppHeaderSharing_&lt;name&gt;_H</code>) so it is processed only once, and each function is sandboxed inside a <code>RcppHeaderSharing</code> namespace so that consumers retrieve it with a namespaced call such as <code><a href="reference/add_numbers.html">RcppHeaderSharing::add_numbers()</a></code>:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="pp">#ifndef RcppHeaderSharing_add_numbers_H</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="pp">#define RcppHeaderSharing_add_numbers_H</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="kw">namespace</span> RcppHeaderSharing <span class="op">{</span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="kw">inline</span> Rcpp<span class="op">::</span>NumericVector add_numbers<span class="op">(</span>Rcpp<span class="op">::</span>NumericVector x<span class="op">,</span> <span class="dt">double</span> y<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  <span class="cf">return</span> x <span class="op">+</span> y<span class="op">;</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="pp">#endif</span></span></code></pre></div>
+<p>So the package can compile against its own headers, <code>src/Makevars</code> (and <code>src/Makevars.win</code> on Windows) add the include directory to the compiler flags:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="dt">PKG_CXXFLAGS</span><span class="ch">=</span><span class="st">-I../inst/include/</span></span></code></pre></div>
 </div>
 <div class="section level4">
 <h4 id="inline">Inline<a class="anchor" aria-label="anchor" href="#inline"></a>
 </h4>
-<p>Todo: Add explanation</p>
+<p>Because the function definitions live entirely in the headers, those headers are <code>#include</code>d into multiple translation units – both within this package and in any package that links against it. Repeating a function’s full definition across translation units would ordinarily violate the <em>One Definition Rule</em> and produce “multiple definition” errors at link time. Marking each function <code>inline</code> is what resolves this: it permits the identical definition to appear in every translation unit that includes the header and instructs the linker to collapse those copies into one. The <code>inline</code> keyword is therefore the mechanism that makes a <em>header-only</em> library possible.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co">// The `inline` keyword lets this definition be included in many translation</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="co">// units without a One Definition Rule violation (from inst/include/hello/say_hello.h).</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="kw">namespace</span> RcppHeaderSharing <span class="op">{</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="kw">inline</span> <span class="dt">void</span> say_hello<span class="op">()</span> <span class="op">{</span></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>  Rcpp<span class="op">::</span>Rcout <span class="op">&lt;&lt;</span> <span class="st">"hello!"</span> <span class="op">&lt;&lt;</span> <span class="bu">std::</span>endl<span class="op">;</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 </div>
 </div>
 <div class="section level3">
@@ -116,10 +149,10 @@
 Imports:
     Rcpp (&gt;= 0.12.11)</code></pre>
 <p>Within a <em>C++</em> file in <code>src/</code>, then add:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;Rcpp.h&gt;</span></span>
-<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;package_name.h&gt;</span></span></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;Rcpp.h&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;package_name.h&gt;</span></span></code></pre></div>
 <p>Retrieve the function definitions with a namespaced function call, e.g.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>package_name<span class="op">::</span>function_name<span class="op">()</span></span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a>package_name<span class="op">::</span>function_name<span class="op">()</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="reference-implementations">Reference Implementations<a class="anchor" aria-label="anchor" href="#reference-implementations"></a>
