@@ -70,13 +70,77 @@ done in `.cpp`.
     └── export-inline-header.cpp     # Surface into R a C++ header function.
 ```
 
-#### Headers 
+#### Headers
 
-Todo: Add explanation
+The shared _C++_ code is placed under `inst/include/` so that, once the package
+is installed, the headers are copied into the installed package's `include/`
+directory, the location other packages reach through `LinkingTo`. The headers
+are organized around a single entry-point header, `RcppHeaderSharing.h`, that
+includes `Rcpp.h` once and then pulls in each individual header using relative
+`""` includes:
 
-#### Inline 
+```cpp
+#ifndef RcppHeaderSharing_RcppHeaderSharing_H
+#define RcppHeaderSharing_RcppHeaderSharing_H
 
-Todo: Add explanation
+#include <Rcpp.h>
+
+#include "hello/say_hello.h"
+#include "rcpp_math/add_numbers.h"
+
+#endif
+```
+
+Each header is wrapped in an inclusion guard named after the package and the
+header (`RcppHeaderSharing_<name>_H`) so it is processed only once, and each
+function is sandboxed inside a `RcppHeaderSharing` namespace so that consumers
+retrieve it with a namespaced call such as `RcppHeaderSharing::add_numbers()`:
+
+```cpp
+#ifndef RcppHeaderSharing_add_numbers_H
+#define RcppHeaderSharing_add_numbers_H
+
+namespace RcppHeaderSharing {
+
+inline Rcpp::NumericVector add_numbers(Rcpp::NumericVector x, double y) {
+  return x + y;
+}
+
+}
+
+#endif
+```
+
+So the package can compile against its own headers, `src/Makevars` (and
+`src/Makevars.win` on Windows) add the include directory to the compiler flags:
+
+```makefile
+PKG_CXXFLAGS=-I../inst/include/
+```
+
+#### Inline
+
+Because the function definitions live entirely in the headers, those headers are
+`#include`d into multiple translation units, both within this package and in
+any package that links against it. Repeating a function's full definition across
+translation units would ordinarily violate the _One Definition Rule_ and produce
+"multiple definition" errors at link time. Marking each function `inline` is what
+resolves this: it permits the identical definition to appear in every translation
+unit that includes the header and instructs the linker to collapse those copies
+into one. The `inline` keyword is therefore the mechanism that makes a
+_header-only_ library possible.
+
+```cpp
+// The `inline` keyword lets this definition be included in many translation
+// units without a One Definition Rule violation (from inst/include/hello/say_hello.h).
+namespace RcppHeaderSharing {
+
+inline void say_hello() {
+  Rcpp::Rcout << "hello!" << std::endl;
+}
+
+}
+```
 
 ### Inclusion in another R package
 
