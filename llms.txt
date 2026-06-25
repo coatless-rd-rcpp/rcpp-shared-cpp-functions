@@ -74,7 +74,7 @@ meat of the implementation is done in `.cpp`.
 
 The shared *C++* code is placed under `inst/include/` so that, once the
 package is installed, the headers are copied into the installed
-package’s `include/` directory – the location other packages reach
+package’s `include/` directory, the location other packages reach
 through `LinkingTo`. The headers are organized around a single
 entry-point header, `RcppHeaderSharing.h`, that includes `Rcpp.h` once
 and then pulls in each individual header using relative `""` includes:
@@ -123,7 +123,7 @@ PKG_CXXFLAGS=-I../inst/include/
 #### Inline
 
 Because the function definitions live entirely in the headers, those
-headers are `#include`d into multiple translation units – both within
+headers are `#include`d into multiple translation units, both within
 this package and in any package that links against it. Repeating a
 function’s full definition across translation units would ordinarily
 violate the *One Definition Rule* and produce “multiple definition”
