@@ -15,9 +15,9 @@ keyword.
 
 To install the package, you must first have a compiler on your system that is
 compatible with R. For help on obtaining a compiler consult either
-[macOS](http://thecoatlessprofessor.com/programming/r-compiler-tools-for-rcpp-on-os-x/)
+[macOS][compiler-macos]
 or
-[Windows](http://thecoatlessprofessor.com/programming/rcpp/install-rtools-for-rcpp/)
+[Windows][compiler-windows]
 guides.
 
 With a compiler in hand, one can then install the package from GitHub by:
@@ -147,7 +147,7 @@ inline void say_hello() {
 In the other _R_ package, modify the `DESCRIPTION` file's `LinkingTo:` field
 to include the package name. 
 
-```
+```default
 LinkingTo: Rcpp, package_name
 Imports:
     Rcpp (>= 0.12.11)
@@ -171,12 +171,19 @@ package_name::function_name()
 Samples of using making available functions via a _C++ header-only_ library
 _R_ package:
 
-- [`Rcpp`](https://github.com/rcppcore/rcpp)
-- [`RcppArmadillo`](https://github.com/rcppcore/rcpparmadillo)
-- [`RcppEigen`](https://github.com/rcppcore/rcppeigen)
-- [`sitmo`](https://github.com/coatless/sitmo)
+- [`Rcpp`][rcpp]
+- [`RcppArmadillo`][rcpp-armadillo]
+- [`RcppEigen`][rcpp-eigen]
+- [`sitmo`][sitmo]
 
 
 ## License
 
 GPL (\>= 2)
+
+[compiler-macos]: http://thecoatlessprofessor.com/programming/r-compiler-tools-for-rcpp-on-os-x/
+[compiler-windows]: http://thecoatlessprofessor.com/programming/rcpp/install-rtools-for-rcpp/
+[rcpp]: https://github.com/rcppcore/rcpp
+[rcpp-armadillo]: https://github.com/rcppcore/rcpparmadillo
+[rcpp-eigen]: https://github.com/rcppcore/rcppeigen
+[sitmo]: https://github.com/coatless/sitmo
