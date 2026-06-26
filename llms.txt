@@ -150,9 +150,11 @@ inline void say_hello() {
 In the other *R* package, modify the `DESCRIPTION` file’s `LinkingTo:`
 field to include the package name.
 
-    LinkingTo: Rcpp, package_name
-    Imports:
-        Rcpp (>= 0.12.11)
+``` default
+LinkingTo: Rcpp, package_name
+Imports:
+    Rcpp (>= 0.12.11)
+```
 
 Within a *C++* file in `src/`, then add:
 

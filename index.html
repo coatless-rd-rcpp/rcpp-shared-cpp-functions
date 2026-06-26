@@ -145,9 +145,9 @@
 <h3 id="inclusion-in-another-r-package">Inclusion in another R package<a class="anchor" aria-label="anchor" href="#inclusion-in-another-r-package"></a>
 </h3>
 <p>In the other <em>R</em> package, modify the <code>DESCRIPTION</code> file’s <code>LinkingTo:</code> field to include the package name.</p>
-<pre><code>LinkingTo: Rcpp, package_name
-Imports:
-    Rcpp (&gt;= 0.12.11)</code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode default"><code class="sourceCode default"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>LinkingTo: Rcpp, package_name</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>Imports:</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>    Rcpp (&gt;= 0.12.11)</span></code></pre></div>
 <p>Within a <em>C++</em> file in <code>src/</code>, then add:</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode cpp"><code class="sourceCode cpp"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;Rcpp.h&gt;</span></span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;package_name.h&gt;</span></span></code></pre></div>
